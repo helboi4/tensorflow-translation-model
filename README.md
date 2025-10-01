@@ -1,4 +1,4 @@
-#Explanation
+# Explanation
 This is a program to train and export a TensorFlow model that can translate one language into another (usually one of those being English). 
 I am a beginner at training models and using TensorFlow (or any ML in Python) so it is loosely based on this tutorial from the TensorFlow documentation: https://www.tensorflow.org/text/tutorials/nmt_with_attention
 I have added some features to make it possible to run fully locally and use any zip file of data you should want as well as some nicities like logging etc. It is also now fully OOP structured.
