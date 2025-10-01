@@ -11,17 +11,18 @@ I got my data set from http://www.manythings.org/anki/
 1. Ensure you have Python 3 installed on your system
 2. Clone the project into your desired directory
 3. Setup the virtual environment `python3 -m venv .venv`
-4. Install dependencies from the requirements file `pip install -r requirements.txt`
-5. Download on of the zips from http://www.manythings.org/anki/
-6. Place it wherever you want but you probably want to put it in the root of the project. Take note of the relative path
-7. Look at the contents of the archive using 7zip or the tool of your choice, check where the actual txt file is that has the data. Take not of the name
-8. Create a .env file in the root of the project with the following structure
+4. Start the virtual environment `source .venv/bin/activate`
+5. Install dependencies from the requirements file `pip install -r requirements.txt`
+6. Download on of the zips from http://www.manythings.org/anki/
+7. Place it wherever you want but you probably want to put it in the root of the project. Take note of the relative path
+8. Look at the contents of the archive using 7zip or the tool of your choice, check where the actual txt file is that has the data. Take not of the name
+9. Create a .env file in the root of the project with the following structure
    ```
      PATH_TO_ZIP="./your-zip.zip"
      DATA_FILE_NAME="data file name"
    ```
-9. Run using `python3 main.py`
-10. Enjoy
+10. Run using `python3 main.py`
+11. Enjoy
 
 #Project progess
 - [x] Create a ShapeChecker class for handling shape incompatibility issues
