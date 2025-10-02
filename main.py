@@ -1,10 +1,9 @@
+from dotenv import load_dotenv
+load_dotenv()
 from dataset_processor import DataSetProcessor
 from os import environ
 import logging
 from sys import exit
-from dotenv import load_dotenv
-
-load_dotenv()
 
 PATH_TO_ZIP = environ.get("PATH_TO_ZIP")
 DATA_FILE_NAME = environ.get("DATA_FILE_NAME")
