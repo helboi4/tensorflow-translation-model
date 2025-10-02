@@ -24,6 +24,7 @@ I got my data set from http://www.manythings.org/anki/
    ```
      PATH_TO_ZIP="./your-zip.zip"
      DATA_FILE_NAME="data file name"
+     LANGUAGE_CODE="a language code in standardised format lowercase"
    ```
 10. Run using `python3 main.py`
 11. Enjoy
