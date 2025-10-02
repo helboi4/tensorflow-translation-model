@@ -5,6 +5,10 @@ I am a beginner at training models and using TensorFlow (or any ML in Python) so
 
 I have added some features to make it possible to run fully locally and use any zip file of data you should want as well as some nicities like logging etc. It is also now fully OOP structured.
 
+My intention is to learn more about implementing ML in depth in the future by completing this book: https://www.oreilly.com/library/view/hands-on-machine-learning/9781492032632/
+
+I think it's important to use books and such slow resources to get really to grips with a problem, so this is just me dipping my toes in the water before diving deep.
+
 I got my data set from http://www.manythings.org/anki/
 
 # Quick Start Guide
