@@ -29,7 +29,7 @@ I got my data set from http://www.manythings.org/anki/
 10. Run using `python3 main.py`
 11. Enjoy
 
-#Project progess
+# Project progess
 - [x] Create a ShapeChecker class for handling shape incompatibility issues
 - [x] Create a DataProcessor class to load the zip file and create a tf.dataset
 - [ ] Add functions to DataProcessor to vectorise and process the data
