@@ -1,4 +1,4 @@
-from base_enum import BaseEnum
+from enums.base_enum import BaseEnum
 
 class Language(BaseEnum):
     # Latin family

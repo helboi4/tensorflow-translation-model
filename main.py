@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 load_dotenv()
-from dataset_processor import DataSetProcessor
+from preprocessing.dataset_processor import DataSetProcessor
 from os import environ
 import logging
 from sys import exit

@@ -3,7 +3,7 @@ from zipfile import ZipFile
 import numpy as np
 import tensorflow as tf
 import logging
-from text_sanitizer import TextSanitizer
+from preprocessing.text_sanitizer import TextSanitizer
 from os import environ
 
 class DataSetProcessor():

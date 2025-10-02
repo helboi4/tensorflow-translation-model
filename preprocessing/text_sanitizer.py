@@ -1,9 +1,9 @@
 from typing import Text
 import tensorflow_text as tf_txt
 import tensorflow as tf
-from language import Language
-from language_mapper import get_language_family
-from text_processing_config import TextProcessingConfig, get_processing_config
+from enums.language import Language
+from mappers.language_mapper import get_language_family
+from config.text_processing_config import TextProcessingConfig, get_processing_config
 
 class LanguageConfigurationError(Exception):
     pass

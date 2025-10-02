@@ -1,6 +1,6 @@
 # language_mapper.py
-from language import Language
-from language_family import LanguageFamily
+from enums.language import Language
+from enums.language_family import LanguageFamily
 
 def get_language_family(language: Language) -> LanguageFamily:
     """Map a language to its punctuation/writing system family."""

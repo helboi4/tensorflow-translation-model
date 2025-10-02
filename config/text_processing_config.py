@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from language_family import LanguageFamily
+from enums.language_family import LanguageFamily
 
 @dataclass
 class TextProcessingConfig:
