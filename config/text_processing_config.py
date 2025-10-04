@@ -9,6 +9,7 @@ class TextProcessingConfig:
     needs_lowercasing: bool  # Whether to lowercase
     has_word_spacing: bool  # Whether words are separated by spaces
     normalization_form: str  # Unicode normalization (NFKD, NFC, etc.)
+    vocab_size: int # Recommended vocab size to have enough characters for tokens
 
 def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
     """Get text processing configuration for a language family."""
@@ -19,7 +20,8 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             punctuation=r'.?!,;:',
             needs_lowercasing=True,
             has_word_spacing=True,
-            normalization_form='NFKD'
+            normalization_form='NFKD',
+            vocab_size=10000
         ),
         
         LanguageFamily.CJK: TextProcessingConfig(
@@ -27,7 +29,8 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             punctuation=r'\x{3002}\x{ff1f}\x{ff01}\x{3001}',  # 。？！、
             needs_lowercasing=False,
             has_word_spacing=False,
-            normalization_form='NFKD'
+            normalization_form='NFKD',
+            vocab_size=30000
         ),
         
         LanguageFamily.ARABIC: TextProcessingConfig(
@@ -35,7 +38,8 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             punctuation=r'\x{061f}\x{060c}\x{061b}',  # ؟،؛
             needs_lowercasing=False,
             has_word_spacing=True,
-            normalization_form='NFKC'
+            normalization_form='NFKC',
+            vocab_size=15000
         ),
         
         LanguageFamily.DEVANAGARI: TextProcessingConfig(
@@ -43,7 +47,8 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             punctuation=r'\x{0964}\x{0965}.?!,',  # ।॥ + Western
             needs_lowercasing=False,
             has_word_spacing=True,
-            normalization_form='NFKD'
+            normalization_form='NFKD',
+            vocab_size=15000
         ),
         
         LanguageFamily.CYRILLIC: TextProcessingConfig(
@@ -51,7 +56,8 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             punctuation=r'.?!,;:\x{00ab}\x{00bb}',  # «»
             needs_lowercasing=True,
             has_word_spacing=True,
-            normalization_form='NFKD'
+            normalization_form='NFKD',
+            vocab_size=10000
         ),
         
         LanguageFamily.THAI_LAO: TextProcessingConfig(
@@ -59,7 +65,8 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             punctuation=r'.?!,',
             needs_lowercasing=False,
             has_word_spacing=False,
-            normalization_form='NFKC'
+            normalization_form='NFKC',
+            vocab_size=15000
         ),
         
         LanguageFamily.BRAHMIC: TextProcessingConfig(
@@ -67,7 +74,8 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             punctuation=r'\x{0964}.?!,',  # । + Western
             needs_lowercasing=False,
             has_word_spacing=True,
-            normalization_form='NFKD'
+            normalization_form='NFKD',
+            vocab_size=15000
         ),
         
         LanguageFamily.HEBREW: TextProcessingConfig(
@@ -75,7 +83,8 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             punctuation=r'.?!,;:',
             needs_lowercasing=False,
             has_word_spacing=True,
-            normalization_form='NFKD'
+            normalization_form='NFKD',
+            vocab_size=10000
         ),
         
         LanguageFamily.HANGUL: TextProcessingConfig(
@@ -83,7 +92,8 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             punctuation=r'.?!,',
             needs_lowercasing=False,
             has_word_spacing=True,
-            normalization_form='NFKD'
+            normalization_form='NFKD',
+            vocab_size=12000
         ),
         
         LanguageFamily.GREEK: TextProcessingConfig(
@@ -91,7 +101,8 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             punctuation=r'.;!:',
             needs_lowercasing=True,
             has_word_spacing=True,
-            normalization_form='NFKD'
+            normalization_form='NFKD',
+            vocab_size=10000
         ),
     }
     

@@ -3,7 +3,7 @@ from zipfile import ZipFile
 import numpy as np
 import tensorflow as tf
 import logging
-from preprocessing.text_sanitizer import TextSanitizer
+from preprocessing.text_processor import TextProcessor
 from os import environ
 
 class DataSetProcessor():
@@ -17,11 +17,19 @@ class DataSetProcessor():
         self.unzip_file_and_set_path(path_to_zip, data_file_name)
         target, context = self.load_data()
         train_raw, val_raw = self.create_tf_dataset(target, context)
+        print("train length: " + str(len(train_raw)))
+        print("val length: " + str(len(val_raw)))
         self.print_samples_for_debug(train_raw)
         example_text = tf.constant("武器の取り引きなども制限されます。")
         language_code = environ.get("LANGUAGE_CODE")
-        sanitizer = TextSanitizer(language_code=language_code)
-        print(sanitizer.sanitize_text(example_text).numpy().decode())
+        text_processor = TextProcessor(language_code=language_code)
+        print(text_processor.sanitize_text(example_text).numpy().decode())
+        train_ds, val_ds = text_processor.process_text(train_raw, val_raw)
+#        for (ex_context_tok, ex_tar_in), ex_tar_out in train_ds.take(1):
+#            print(ex_context_tok[0, :10].numpy()) 
+#            print()
+#            print(ex_tar_in[0, :10].numpy()) 
+#            print(ex_tar_out[0, :10].numpy())
         print("Done")
 
     def unzip_file_and_set_path(self, path_to_zip:str, data_file_name:str) -> None:
