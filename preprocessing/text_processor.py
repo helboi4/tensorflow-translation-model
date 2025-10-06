@@ -13,12 +13,12 @@ class LanguageConfigurationError(Exception):
 
 class TextProcessor():
 
-    def __init__(self, language_code: str ):
+    def __init__(self, language_code: str | None ):
         self.language_code = language_code
         self.config = self.get_config()
 
     def get_config(self) -> TextProcessingConfig:
-        if self.language_code not in Language:
+        if (self.language_code not in Language or self.language_code == None):
             raise LanguageConfigurationError("Invalid language code provided, please fix in .env")
         language_family = get_language_family(Language(self.language_code))
         return get_processing_config(language_family)
@@ -49,7 +49,7 @@ class TextProcessor():
 
         return text
 
-    def process_text(self, train_raw, val_raw):
+    def create_processors(self, train_raw, val_raw):
         config = self.config
 
         #Text processing for original language (configarable)
@@ -68,8 +68,10 @@ class TextProcessor():
             ragged=True
         )
         target_text_processor.adapt(train_raw.map(lambda context, target: target))
-
-        #
+        
+        return context_text_processor, target_text_processor
+        
+    def create_datasets(self, context_text_processor, target_text_processor):
         def create_input_label_pairs(context, target):
             context = context_text_processor(context).to_tensor()
             target = target_text_processor(target)

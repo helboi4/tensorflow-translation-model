@@ -3,34 +3,22 @@ from zipfile import ZipFile
 import numpy as np
 import tensorflow as tf
 import logging
+
+from tensorflow.python.types.data import DatasetV2
 from preprocessing.text_processor import TextProcessor
 from os import environ
 
-class DataSetProcessor():
+class DataLoader():
 
     def __init__(self):
         self.file_path = None
         logging.basicConfig(format="%(asctime)s %(levelname)s %(message)s", level=logging.DEBUG)
         self.log = logging.getLogger(__name__)
 
-    def prepare_data(self, path_to_zip:str, data_file_name:str) -> None:
+    def load_raw_data(self, path_to_zip:str, data_file_name:str) -> tuple[DatasetV2, DatasetV2]:
         self.unzip_file_and_set_path(path_to_zip, data_file_name)
         target, context = self.load_data()
-        train_raw, val_raw = self.create_tf_dataset(target, context)
-        print("train length: " + str(len(train_raw)))
-        print("val length: " + str(len(val_raw)))
-        self.print_samples_for_debug(train_raw)
-        example_text = tf.constant("武器の取り引きなども制限されます。")
-        language_code = environ.get("LANGUAGE_CODE")
-        text_processor = TextProcessor(language_code=language_code)
-        print(text_processor.sanitize_text(example_text).numpy().decode())
-        train_ds, val_ds = text_processor.process_text(train_raw, val_raw)
-#        for (ex_context_tok, ex_tar_in), ex_tar_out in train_ds.take(1):
-#            print(ex_context_tok[0, :10].numpy()) 
-#            print()
-#            print(ex_tar_in[0, :10].numpy()) 
-#            print(ex_tar_out[0, :10].numpy())
-        print("Done")
+        return self.create_tf_dataset(target, context)
 
     def unzip_file_and_set_path(self, path_to_zip:str, data_file_name:str) -> None:
         extract_dir = Path("./dataset")
