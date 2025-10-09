@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enums.language_family import LanguageFamily
 
 @dataclass
-class TextProcessingConfig:
+class LanguageConfig:
     """Configuration for text processing based on language family."""
     character_range: str  # Regex for valid characters
     punctuation: str  # Regex for punctuation marks
@@ -11,11 +11,11 @@ class TextProcessingConfig:
     normalization_form: str  # Unicode normalization (NFKD, NFC, etc.)
     vocab_size: int # Recommended vocab size to have enough characters for tokens
 
-def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
+def get_language_config(family: LanguageFamily) -> LanguageConfig:
     """Get text processing configuration for a language family."""
     
     configs = {
-        LanguageFamily.LATIN: TextProcessingConfig(
+        LanguageFamily.LATIN: LanguageConfig(
             character_range=r'a-z',
             punctuation=r'.?!,;:',
             needs_lowercasing=True,
@@ -24,7 +24,7 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             vocab_size=10000
         ),
         
-        LanguageFamily.CJK: TextProcessingConfig(
+        LanguageFamily.CJK: LanguageConfig(
             character_range=r'\x{3040}-\x{309f}\x{30a0}-\x{30ff}\x{4e00}-\x{9faf}',
             punctuation=r'\x{3002}\x{ff1f}\x{ff01}\x{3001}',  # 。？！、
             needs_lowercasing=False,
@@ -33,7 +33,7 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             vocab_size=30000
         ),
         
-        LanguageFamily.ARABIC: TextProcessingConfig(
+        LanguageFamily.ARABIC: LanguageConfig(
             character_range=r'\x{0600}-\x{06ff}',
             punctuation=r'\x{061f}\x{060c}\x{061b}',  # ؟،؛
             needs_lowercasing=False,
@@ -42,7 +42,7 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             vocab_size=15000
         ),
         
-        LanguageFamily.DEVANAGARI: TextProcessingConfig(
+        LanguageFamily.DEVANAGARI: LanguageConfig(
             character_range=r'\x{0900}-\x{097f}',
             punctuation=r'\x{0964}\x{0965}.?!,',  # ।॥ + Western
             needs_lowercasing=False,
@@ -51,7 +51,7 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             vocab_size=15000
         ),
         
-        LanguageFamily.CYRILLIC: TextProcessingConfig(
+        LanguageFamily.CYRILLIC: LanguageConfig(
             character_range=r'\x{0400}-\x{04ff}',
             punctuation=r'.?!,;:\x{00ab}\x{00bb}',  # «»
             needs_lowercasing=True,
@@ -60,7 +60,7 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             vocab_size=10000
         ),
         
-        LanguageFamily.THAI_LAO: TextProcessingConfig(
+        LanguageFamily.THAI_LAO: LanguageConfig(
             character_range=r'\x{0e00}-\x{0e7f}',
             punctuation=r'.?!,',
             needs_lowercasing=False,
@@ -69,7 +69,7 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             vocab_size=15000
         ),
         
-        LanguageFamily.BRAHMIC: TextProcessingConfig(
+        LanguageFamily.BRAHMIC: LanguageConfig(
             character_range=r'\x{0980}-\x{09ff}\x{0b80}-\x{0bff}\x{0c00}-\x{0c7f}',
             punctuation=r'\x{0964}.?!,',  # । + Western
             needs_lowercasing=False,
@@ -78,7 +78,7 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             vocab_size=15000
         ),
         
-        LanguageFamily.HEBREW: TextProcessingConfig(
+        LanguageFamily.HEBREW: LanguageConfig(
             character_range=r'\x{0590}-\x{05ff}',
             punctuation=r'.?!,;:',
             needs_lowercasing=False,
@@ -87,7 +87,7 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             vocab_size=10000
         ),
         
-        LanguageFamily.HANGUL: TextProcessingConfig(
+        LanguageFamily.HANGUL: LanguageConfig(
             character_range=r'\x{ac00}-\x{d7af}',
             punctuation=r'.?!,',
             needs_lowercasing=False,
@@ -96,7 +96,7 @@ def get_processing_config(family: LanguageFamily) -> TextProcessingConfig:
             vocab_size=12000
         ),
         
-        LanguageFamily.GREEK: TextProcessingConfig(
+        LanguageFamily.GREEK: LanguageConfig(
             character_range=r'\x{0370}-\x{03ff}',
             punctuation=r'.;!:',
             needs_lowercasing=True,

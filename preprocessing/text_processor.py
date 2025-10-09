@@ -6,39 +6,28 @@ import keras
 from enums.language import Language
 from enums.language_family import LanguageFamily
 from mappers.language_mapper import get_language_family
-from config.text_processing_config import TextProcessingConfig, get_processing_config
-
-class LanguageConfigurationError(Exception):
-    pass
+from config.language_config import LanguageConfig, get_language_config
 
 class TextProcessor():
 
-    def __init__(self, language_code: str | None ):
-        self.language_code = language_code
-        self.config = self.get_config()
-
-    def get_config(self) -> TextProcessingConfig:
-        if (self.language_code not in Language or self.language_code == None):
-            raise LanguageConfigurationError("Invalid language code provided, please fix in .env")
-        language_family = get_language_family(Language(self.language_code))
-        return get_processing_config(language_family)
-
+    def __init__(self, lang_config ):
+        self.lang_config = lang_config
 
     def sanitize_text(self, text):
-        config = self.config
+        lang_config = self.lang_config
         #Normalize Unicode
-        text = tf_txt.normalize_utf8(text, config.normalization_form)
+        text = tf_txt.normalize_utf8(text, lang_config.normalization_form)
 
         #Lowercase languages that have case distinction
-        if config.needs_lowercasing:
+        if lang_config.needs_lowercasing:
             text = tf.strings.lower(text)
 
         #Keep valid characters and punctuation
-        keep_pattern = f"[^{config.character_range}{config.punctuation}]"
+        keep_pattern = f"[^{lang_config.character_range}{config.punctuation}]"
         text = tf.strings.regex_replace(text, keep_pattern, "")
 
         #Add spaces around punctuation
-        punct_pattern = f"[{config.punctuation}]"
+        punct_pattern = f"[{lang_config.punctuation}]"
         text = tf.strings.regex_replace(text, punct_pattern, r" \0")
 
         #Strip whitespace
@@ -50,12 +39,12 @@ class TextProcessor():
         return text
 
     def create_processors(self, train_raw, val_raw):
-        config = self.config
+        lang_config = self.lang_config
 
-        #Text processing for original language (configarable)
+        #Text processing for original language (lang_configarable)
         context_text_processor = keras.layers.TextVectorization(
             standardize=self.sanitize_text,
-            max_tokens=config.vocab_size,
+            max_tokens=lang_config.vocab_size,
             ragged=True
         )
         print("here")
@@ -64,14 +53,14 @@ class TextProcessor():
         #Text processing for the language we're translating into (always English for now)
         target_text_processor = keras.layers.TextVectorization(
             standardize=self.sanitize_text,
-            max_tokens=get_processing_config(LanguageFamily.LATIN).vocab_size,
+            max_tokens=get_language_config(LanguageFamily.LATIN).vocab_size,
             ragged=True
         )
         target_text_processor.adapt(train_raw.map(lambda context, target: target))
         
         return context_text_processor, target_text_processor
         
-    def create_datasets(self, context_text_processor, target_text_processor):
+    def create_datasets(self, context_text_processor, target_text_processor, train_raw, val_raw):
         def create_input_label_pairs(context, target):
             context = context_text_processor(context).to_tensor()
             target = target_text_processor(target)
