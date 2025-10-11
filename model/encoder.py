@@ -6,7 +6,7 @@ class Encoder(keras.layers.Layer):
 
     def __init__(self, text_processor, units):
         super(Encoder, self).__init__()
-        self.text_processort = text_processor
+        self.text_processor = text_processor
         self.vocab_size = text_processor.vocabulary_size()
         self.units = units
 

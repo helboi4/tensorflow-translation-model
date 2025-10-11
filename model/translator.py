@@ -1,20 +1,26 @@
 import tensorflow as tf
 import keras
+from config.training_config import TrainingConfig
 from decoder import Decoder
 from encoder import Encoder
 from config.language_config import get_language_config
 from enums.language_family import LanguageFamily
+import logging
 
 class Translator(keras.Model):
 
-    def __init__(self, units, context_text_processor, target_text_processor):
+    def __init__(self, units, config: TrainingConfig):
         super().__init__()
         #Build the encorder and decoder
-        encoder = Encoder(context_text_processor, units)
-        decoder = Decoder(target_text_processor, units, get_language_config(LanguageFamily.LATIN))
+        encoder = Encoder(config.context_text_processor, units)
+        decoder = Decoder(config.target_text_processor, units, get_language_config(LanguageFamily.LATIN))
 
         self.encoder = encoder
         self.decoder = decoder
+        self.config = config
+        
+        logging.basicConfig(format="%(asctime)s %(levelname)s %(message)s", level=logging.DEBUG)
+        self.log = logging.getLogger(__name__)
 
     def call(self, inputs):
         context, x = inputs
@@ -52,7 +58,7 @@ class Translator(keras.Model):
         #Mask has value 1 for each real word so the sum of its elements is the number of real words
         return tf.reduce_sum(loss) / tf.reduce_sum(mask)
 
-    def masked_ac(self, y_true, y_pred):
+    def masked_acc(self, y_true, y_pred):
         #Get the highest prediction
         y_pred = tf.argmax(y_pred, axis=-1)
         #Convert to same type for comparison
@@ -65,3 +71,15 @@ class Translator(keras.Model):
         #Return mean accuracy over real words only
         return tf.reduce_sum(match) /tf.reduce_sum(mask)
 
+    def train(self):
+        model = self
+        context_text_processor = self.config.context_text_processor
+        target_text_processor = self.config.target_text_processor
+        train_ds = self.config.train_ds
+        val_ds = self.config.val_s
+
+        model.compile(
+            optimizer="adam",
+            loss=model.masked_loss,
+            metrics=[model.masked_acc, model.masked_loss]
+        )
