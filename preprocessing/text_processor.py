@@ -24,7 +24,7 @@ class TextProcessor():
             text = tf.strings.lower(text)
 
         #Keep valid characters and punctuation
-        keep_pattern = f"[^{lang_config.character_range}{config.punctuation}]"
+        keep_pattern = f"[^{lang_config.character_range}{lang_config.punctuation}]"
         text = tf.strings.regex_replace(text, keep_pattern, "")
 
         #Add spaces around punctuation

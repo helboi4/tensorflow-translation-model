@@ -1,7 +1,7 @@
 import tensorflow as tf
 import keras
 from config.language_config import LanguageConfig
-from cross_attention import CrossAttention
+from model.cross_attention import CrossAttention
 from utils.shape_checker import ShapeChecker
 
 #The decoder is used to go through the English sentence one word at a time and predict the next word
@@ -10,7 +10,7 @@ from utils.shape_checker import ShapeChecker
 class Decoder(keras.layers.Layer):
     
     def __init__(self, text_processor, units, lang_config: LanguageConfig):
-        super().__init__()
+        super(Decoder, self).__init__()
         self.text_processor = text_processor
         self.vocab_size = text_processor.vocabulary_size()
         #The oov token is the token used for when the word is not in the supplied vocabulary
@@ -97,7 +97,7 @@ class Decoder(keras.layers.Layer):
         embedded = self.embedding(start_tokens)
 
         #Return all plus an RNN state with empty memory
-        return start_tokens, done, self.rnn.get_initial_state(embedded)[0]
+        return start_tokens, done, self.rnn.get_initial_state(batch_size=batch_size)
 
     #Converts tokens to real words, adds back in spaces and removes start and end tokens
     def tokens_to_text(self, tokens):

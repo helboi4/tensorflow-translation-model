@@ -41,5 +41,5 @@ if __name__ == "__main__":
     translator = Translator(UNITS, training_config)
     translator.train()
     export = Export(translator)
-    tf.saved_model.save(export, "translator")
+    tf.saved_model.save(export, "translator", options=tf.saved_model.SaveOptions(save_debug_info=True))
     

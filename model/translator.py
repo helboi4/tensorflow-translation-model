@@ -1,8 +1,8 @@
 import tensorflow as tf
 import keras
 from config.training_config import TrainingConfig
-from decoder import Decoder
-from encoder import Encoder
+from model.decoder import Decoder
+from model.encoder import Encoder
 from config.language_config import get_language_config
 from enums.language_family import LanguageFamily
 import logging
@@ -76,10 +76,53 @@ class Translator(keras.Model):
         context_text_processor = self.config.context_text_processor
         target_text_processor = self.config.target_text_processor
         train_ds = self.config.train_ds
-        val_ds = self.config.val_s
+        val_ds = self.config.val_ds
 
         model.compile(
             optimizer="adam",
             loss=model.masked_loss,
             metrics=[model.masked_acc, model.masked_loss]
         )
+
+        model.fit(
+            train_ds.repeat(),
+            epochs=100,
+            steps_per_epoch=100,
+            validation_data=val_ds,
+            validation_steps=20,
+            callbacks=[
+                keras.callbacks.EarlyStopping(patience=3)
+            ]
+        )
+
+    def translate(self,
+                  texts, *,
+                  max_length=50,
+                  temperature=0.0):
+      # Process the input texts
+      context = self.encoder.convert_input(texts)
+      batch_size = tf.shape(texts)[0]
+    
+      # Setup the loop inputs
+      tokens = []
+      attention_weights = []
+      next_token, done, state = self.decoder.get_initial_state(context)
+    
+      for _ in range(max_length):
+        # Generate the next token
+        next_token, done, state = self.decoder.get_next_token(
+            context, next_token, done,  state, temperature)
+    
+        # Collect the generated tokens
+        tokens.append(next_token)
+        attention_weights.append(self.decoder.last_attention_weights)
+    
+        if tf.executing_eagerly() and tf.reduce_all(done):
+          break
+    
+      # Stack the lists of tokens and attention weights.
+      tokens = tf.concat(tokens, axis=-1)   # t*[(batch 1)] -> (batch, t)
+      self.last_attention_weights = tf.concat(attention_weights, axis=1)  # t*[(batch 1 s)] -> (batch, t s)
+    
+      result = self.decoder.tokens_to_text(tokens)
+      return result
