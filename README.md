@@ -12,9 +12,9 @@ I think it's important to use books and such slow resources to get really to gri
 I got my data set from http://www.manythings.org/anki/
 
 # Quick Start Guide
-1. Ensure you have Python 3 installed on your system
+1. Ensure you have Python 3 installed on your system. NOTE: This only works with Python 3.11 or below because of a bug with keras.
 2. Clone the project into your desired directory
-3. Setup the virtual environment `python3 -m venv .venv`
+3. Setup the virtual environment `python -m venv .venv`
 4. Start the virtual environment `source .venv/bin/activate`
 5. Install dependencies from the requirements file `pip install -r requirements.txt`
 6. Download on of the zips from http://www.manythings.org/anki/
@@ -26,13 +26,13 @@ I got my data set from http://www.manythings.org/anki/
      DATA_FILE_NAME="data file name"
      LANGUAGE_CODE="a language code in standardised format lowercase"
    ```
-10. Run using `python3 main.py`
+10. Run using `python main.py`
 11. Enjoy
 
 # Project progess
 - [x] Create a ShapeChecker class for handling shape incompatibility issues
 - [x] Create a DataProcessor class to load the zip file and create a tf.dataset
-- [ ] Add functions to DataProcessor to vectorise and process the data
-- [ ] Build the code that will initialise and train the model
-- [ ] Add Exporter class that will export the model for use in my language learning projects
+- [x] Add functions to DataProcessor to vectorise and process the data
+- [x] Build the code that will initialise and train the model
+- [x] Add Exporter class that will export the model for use in my language learning projects
 - [ ] Integrate into japanese-with-text project 
